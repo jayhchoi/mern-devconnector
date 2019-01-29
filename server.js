@@ -7,6 +7,7 @@ const { MONGODB_URL } = require('./config/keys');
 const users = require('./routes/api/users');
 const posts = require('./routes/api/posts');
 const profile = require('./routes/api/profile');
+const passport = require('passport');
 
 const app = express();
 
@@ -22,7 +23,8 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-app.get('/', (req, res) => res.send('hello!'));
+app.use(passport.initialize());
+require('./config/passport')(passport);
 
 // USER ROUTES
 app.use('/api/users', users);
