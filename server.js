@@ -12,7 +12,7 @@ const passport = require('passport');
 const app = express();
 
 // MIDDLEWARES
-app.use(bodyParser.urlencoded({ extended: false })); // More on this later...
+app.use(bodyParser.urlencoded({ extended: false })); // This is for easy request from postman?
 app.use(bodyParser.json());
 
 mongoose

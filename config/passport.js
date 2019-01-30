@@ -15,7 +15,9 @@ module.exports = passport => {
     new JwtStrategy(opts, (jwt_payload, done) => {
       User.findById(jwt_payload._id)
         .then(user => {
-          if (user) done(null, user); // This passes the user into req.user in the next callback
+          if (user) {
+            return done(null, user);
+          } // This passes the user into req.user in the next callback
 
           return done(null, false);
         })
