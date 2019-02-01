@@ -22,22 +22,24 @@ router.get('/test', (req, res) => res.send({ msg: 'Profile routes works' }));
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
+  async (req, res) => {
     const errors = {};
 
-    Profile.findOne({ user: req.user._id })
-      .populate('user', ['name', 'avatar']) // This 'user' is from Model > 'ref'
-      .then(profile => {
-        if (!profile) {
-          errors.profile = 'No profile found';
-          return res.status(404).send(errors);
-        }
+    try {
+      const profile = await Profile.findOne({ user: req.user._id }).populate(
+        'user',
+        ['name', 'avatar']
+      ); // This 'user' is from Model > 'ref'
 
-        res.send(profile);
-      })
-      .catch(err => {
-        res.status(400).send(err);
-      });
+      if (!profile) {
+        errors.profile = 'No profile found';
+        return res.status(404).send(errors);
+      }
+
+      res.send(profile);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 );
 

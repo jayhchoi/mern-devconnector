@@ -20,7 +20,7 @@ router.get('/test', (req, res) => res.send({ msg: 'Users routes works' }));
 // @route GET api/users/register
 // @desc  Register user
 // @access  Public
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
 
   // Input validation
@@ -30,46 +30,49 @@ router.post('/register', (req, res) => {
     return res.status(400).send(errors);
   }
 
-  User.findOne({ email })
-    .then(user => {
-      if (user) {
-        errors.email = 'Email already exists';
-        return res.status(400).send(errors);
-      } else {
-        // Get avatar from gravatar
-        const avatar = gravatar.url(email, {
-          s: '200', // Size
-          r: 'pg', // Rating
-          d: 'mm' // Default img
-        });
+  try {
+    const user = await User.findOne({ email });
 
-        const newUser = new User({
-          name,
-          email,
-          password,
-          avatar
-        });
+    if (user) {
+      errors.email = 'Email already exists';
+      return res.status(400).send(errors);
+    } else {
+      // Get avatar from gravatar
+      const avatar = gravatar.url(email, {
+        s: '200', // Size
+        r: 'pg', // Rating
+        d: 'mm' // Default img
+      });
 
-        // Hash password
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
+      const newUser = new User({
+        name,
+        email,
+        password,
+        avatar
+      });
+
+      // Hash password
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, async (err, hash) => {
+          try {
             newUser.password = hash;
-            newUser
-              .save()
-              .then(user => res.send(user))
-              .catch(err => console.log(err));
-          });
+            const user = await newUser.save();
+            res.send(user);
+          } catch (err) {
+            res.status(400).send(err);
+          }
         });
-      }
-    })
-    .catch(err => console.log(err));
+      });
+    }
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 // @route GET api/users/login
 // @desc  Login user / Return JWT Token
 // @access  Public
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   // Input validation
@@ -79,33 +82,35 @@ router.post('/login', (req, res) => {
     return res.status(400).send(errors);
   }
 
-  User.findOne({ email })
-    .then(user => {
-      // Check for user
-      if (!user) {
-        errors.email = 'User not found';
-        return res.status(404).send(errors);
-      }
+  try {
+    const user = await User.findOne({ email });
 
-      // Check password
-      bcrypt.compare(password, user.password).then(isMatch => {
-        if (isMatch) {
-          // Create token
-          const payload = {
-            _id: user._id,
-            name: user.name,
-            avatar: user.avatar
-          };
+    // Check for user
+    if (!user) {
+      errors.email = 'User not found';
+      return res.status(404).send(errors);
+    }
 
-          const token = jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '24h' });
-          res.send({ success: true, token: 'Bearer ' + token });
-        } else {
-          errors.password = 'Password incorrect';
-          res.status(400).send(errors);
-        }
-      });
-    })
-    .catch(err => console.log(err));
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      // Create token
+      const payload = {
+        _id: user._id,
+        name: user.name,
+        avatar: user.avatar
+      };
+
+      const token = jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '24h' });
+      res.send({ success: true, token: 'Bearer ' + token });
+    } else {
+      errors.password = 'Password incorrect';
+      res.status(400).send(errors);
+    }
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 // @route GET api/users/current
