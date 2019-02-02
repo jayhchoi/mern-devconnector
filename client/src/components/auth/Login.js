@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
+
+import CustomField from '../CustomField';
+import loginFormFields from './loginFormFields';
 
 class Login extends Component {
+  state = {
+    errors: {}
+  };
+
   onSubmit = values => {
     console.log(values);
+  };
+
+  renderFields = () => {
+    const { errors } = this.state;
+
+    return loginFormFields.map(field => (
+      <CustomField {...field} errors={errors} />
+    ));
   };
 
   render() {
@@ -18,25 +33,8 @@ class Login extends Component {
               <p className="lead text-center">
                 Sign in to your DevConnector account
               </p>
-              <form onSubmit={handleSubmit(this.onSubmit)}>
-                <div className="form-group">
-                  <Field
-                    component="input"
-                    type="email"
-                    className="form-control form-control-lg"
-                    placeholder="Email Address"
-                    name="email"
-                  />
-                </div>
-                <div className="form-group">
-                  <Field
-                    component="input"
-                    type="password"
-                    className="form-control form-control-lg"
-                    placeholder="Password"
-                    name="password"
-                  />
-                </div>
+              <form noValidate onSubmit={handleSubmit(this.onSubmit)}>
+                {this.renderFields()}
                 <button type="submit" className="btn btn-info btn-block mt-4">
                   Confirm
                 </button>
