@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
+import PropTypes from 'prop-types';
 
 const CustomField = ({ component, type, name, placeholder, errors }) => {
   return (
@@ -16,6 +17,14 @@ const CustomField = ({ component, type, name, placeholder, errors }) => {
       <div className="invalid-feedback">{errors[name]}</div>
     </div>
   );
+};
+
+CustomField.propTypes = {
+  component: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  errors: PropTypes.object
 };
 
 export default CustomField;

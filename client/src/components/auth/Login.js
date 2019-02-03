@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import CustomField from '../CustomField';
 import loginFormFields from './loginFormFields';
+import { loginUser } from '../../actions/authActions';
 
 class Login extends Component {
-  state = {
-    errors: {}
-  };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
 
   onSubmit = values => {
-    console.log(values);
+    this.props.loginUser(values, this.props.history);
   };
 
   renderFields = () => {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return loginFormFields.map(field => (
-      <CustomField {...field} errors={errors} />
+      <CustomField key={field.name} {...field} errors={errors} />
     ));
   };
 
@@ -46,6 +52,26 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+    errors: state.errors
+  };
+};
+
+Login = connect(
+  mapStateToProps,
+  {
+    loginUser
+  }
+)(withRouter(Login));
 
 export default reduxForm({
   form: 'loginForm'

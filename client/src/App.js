@@ -1,11 +1,34 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import PropTypes from 'prop-types';
 
+import setAuthToken from './utils/setAuthToken';
+import { logoutUser, setCurrentUser } from './actions/authActions';
 import './App.css';
+
 import { Navbar, Footer, Landing } from './components/layouts';
 import { Register, Login } from './components/auth/';
 
 class App extends Component {
+  componentWillMount() {
+    // Check for local token when refreshed AND keep user logged in
+    if (localStorage.jwt) {
+      const token = localStorage.jwt;
+      setAuthToken(token);
+      const decoded = jwtDecode(token);
+
+      this.props.setCurrentUser(decoded);
+
+      // Logout user when token expires
+      if (decoded.exp < Date.now() / 1000) {
+        this.props.logoutUser();
+        window.location.href = '/login'; // Traditional a tag href
+      }
+    }
+  }
+
   render() {
     return (
       <Router>
@@ -23,4 +46,15 @@ class App extends Component {
   }
 }
 
-export default App;
+App.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  setCurrentUser: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  {
+    logoutUser,
+    setCurrentUser
+  }
+)(App);
