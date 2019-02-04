@@ -8,8 +8,10 @@ import setAuthToken from './utils/setAuthToken';
 import { logoutUser, setCurrentUser } from './actions/authActions';
 import './App.css';
 
+import PrivateRoute from './components/PrivateRoute';
 import { Navbar, Footer, Landing } from './components/layouts';
 import { Register, Login } from './components/auth/';
+import { Dashboard } from './components/dashboard';
 
 class App extends Component {
   componentWillMount() {
@@ -34,10 +36,11 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar />
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/register" render={() => <Register />} />
+          <Route exact path="/login" render={() => <Login />} />
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" render={() => <Register />} />
-            <Route exact path="/login" render={() => <Login />} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
           <Footer />
         </div>
