@@ -4,15 +4,21 @@ import { reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import CustomField from '../CustomField';
+import CustomField from '../../components/CustomField';
 import registerFormFields from './registerFormFields';
-import { registerUser } from '../../actions/authActions';
+
+import { registerUser } from '../../actions/auth.action';
+import { unsetErrors } from '../../actions/errors.action';
 
 class Register extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
+  }
+
+  componentWillUnmount() {
+    this.props.unsetErrors();
   }
 
   onSubmit = values => {
@@ -57,6 +63,7 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
+  unsetErrors: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -71,7 +78,8 @@ const mapStateToProps = state => {
 Register = connect(
   mapStateToProps,
   {
-    registerUser
+    registerUser,
+    unsetErrors
   }
 )(withRouter(Register));
 

@@ -4,15 +4,24 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import CustomField from '../CustomField';
+import CustomField from '../../components/CustomField';
 import loginFormFields from './loginFormFields';
-import { loginUser } from '../../actions/authActions';
+
+import { loginUser } from '../../actions/auth.action';
+import { unsetErrors } from '../../actions/errors.action';
 
 class Login extends Component {
   componentWillReceiveProps(nextProps) {
+    const { from } = this.props.location.state || {
+      from: { pathname: '/dashboard' }
+    };
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+      this.props.history.push(from.pathname);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.unsetErrors();
   }
 
   onSubmit = values => {
@@ -55,6 +64,7 @@ class Login extends Component {
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
+  unsetErrors: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -69,7 +79,8 @@ const mapStateToProps = state => {
 Login = connect(
   mapStateToProps,
   {
-    loginUser
+    loginUser,
+    unsetErrors
   }
 )(withRouter(Login));
 

@@ -32,8 +32,9 @@ router.get(
       ); // This 'user' is from Model > 'ref'
 
       if (!profile) {
+        // It's OK not to have a profile, thus NO 404 ERROR
         errors.profile = 'No profile found';
-        return res.status(404).send(errors);
+        return res.send(errors);
       }
 
       res.send(profile);

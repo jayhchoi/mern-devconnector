@@ -1,17 +1,16 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
-import { SET_CURRENT_USER, GET_ERRORS } from './types';
+import { SET_CURRENT_USER, SET_ERRORS } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
 export const registerUser = (values, history) => async dispatch => {
   try {
-    const res = await axios.post('/api/users/register', values);
-    console.log(res);
+    await axios.post('/api/users/register', values);
     history.push('/login');
   } catch (err) {
     dispatch({
-      type: GET_ERRORS,
+      type: SET_ERRORS,
       payload: err.response.data
     });
   }
@@ -32,7 +31,7 @@ export const loginUser = (values, history) => async dispatch => {
     history.push('/');
   } catch (err) {
     dispatch({
-      type: GET_ERRORS,
+      type: SET_ERRORS,
       payload: err.response.data
     });
   }

@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Landing extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
-  }
-
   render() {
+    if (this.props.auth.isAuthenticated) return <Redirect to="/dashboard" />;
+
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">
