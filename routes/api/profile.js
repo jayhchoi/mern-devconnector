@@ -33,8 +33,7 @@ router.get(
 
       if (!profile) {
         // It's OK not to have a profile, thus NO 404 ERROR
-        errors.profile = 'No profile found';
-        return res.send(errors);
+        return res.send({});
       }
 
       res.send(profile);
@@ -59,21 +58,19 @@ router.post(
     }
 
     // Get fields
-    const profileFields = _.pick(req.body, [
-      'handle',
-      'company',
-      'website',
-      'location',
-      'bio',
-      'status',
-      'githubusername',
-      'skills',
-      'social'
-    ]);
+    const profileFields = req.body;
 
     profileFields.user = req.user._id;
-    if (profileFields.skills)
+    if (profileFields.skills && typeof profileFields.skills === String)
       profileFields.skills = profileFields.skills.split(','); // convert string to array
+
+    profileFields.social = {
+      facebook: profileFields.facebook,
+      twitter: profileFields.twitter,
+      instagram: profileFields.instagram,
+      youtube: profileFields.youtube,
+      linkedin: profileFields.linkedin
+    };
 
     Profile.findOne({ user: req.user._id })
       .then(profile => {

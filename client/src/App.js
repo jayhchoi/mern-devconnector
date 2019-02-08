@@ -5,9 +5,10 @@ import { Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 // OTHER LIBRARIES
+import jwtDecode from 'jwt-decode';
 
 // UTILS
-import { history } from './utils';
+import { history, setAuthToken } from './utils';
 
 // ACTIONS
 import { logoutUser, setCurrentUser } from './actions/auth.action';
@@ -24,26 +25,28 @@ import {
   Register,
   Dashboard,
   Landing,
-  CreateProfile
+  CreateProfile,
+  EditProfile
 } from './containers';
 
 class App extends Component {
-  // componentWillMount() {
-  //   // Check for local token when refreshed AND keep user logged in
-  //   if (localStorage.jwt) {
-  //     const token = localStorage.jwt;
-  //     setAuthToken(token);
-  //     const decoded = jwtDecode(token);
+  componentWillMount() {
+    // Check for local token when refreshed AND keep user logged in
+    console.log('Getting auth info from local storage...');
+    if (localStorage.jwt) {
+      const token = localStorage.jwt;
+      setAuthToken(token);
+      const decoded = jwtDecode(token);
 
-  //     this.props.setCurrentUser(decoded);
+      this.props.setCurrentUser(decoded);
 
-  //     // Logout user when token expires
-  //     if (decoded.exp < Date.now() / 1000) {
-  //       this.props.logoutUser();
-  //       window.location.href = '/login'; // Traditional a tag href
-  //     }
-  //   }
-  // }
+      // Logout user when token expires
+      if (decoded.exp < Date.now() / 1000) {
+        this.props.logoutUser();
+        window.location.href = '/login'; // Traditional a tag href
+      }
+    }
+  }
 
   render() {
     return (
@@ -63,6 +66,7 @@ class App extends Component {
             path="/create-profile"
             component={CreateProfile}
           />
+          <PrivateRoute exact path="/edit-profile" component={EditProfile} />
           <Footer />
         </div>
       </Router>
@@ -73,7 +77,14 @@ class App extends Component {
 App.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   setCurrentUser: PropTypes.func.isRequired
+  // auth: PropTypes.object.isRequired
 };
+
+// const mapStateToProps = state => {
+//   return {
+//     auth: state.auth
+//   };
+// };
 
 export default connect(
   null,

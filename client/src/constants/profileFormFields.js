@@ -98,5 +98,13 @@ export const socialFields = [
     type: 'text',
     component: 'input',
     placeholder: 'LinkIn Profile URL'
+  },
+  {
+    prepend: true,
+    icon: 'fab fa-youtube',
+    name: 'youtube',
+    type: 'text',
+    component: 'input',
+    placeholder: 'Youtube Page URL'
   }
 ];

@@ -13,7 +13,7 @@ const PrivateRoute = ({
     <Route
       {...rest} // path, exact, ...
       render={props =>
-        auth.isAuthenticated ? (
+        auth.isAuthenticated === true ? (
           <Component {...props} /> // props passed into the component
         ) : (
           <Redirect
@@ -40,5 +40,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {}
+  null,
+  null,
+  { pure: false }
 )(PrivateRoute);

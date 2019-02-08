@@ -12,10 +12,14 @@ import {
   getCurrentProfile
 } from '../../actions/profiles.action';
 
-class CreateProfile extends Component {
+class EditProfile extends Component {
   state = {
-    displaySocialInputs: false
+    displaySocialInputs: true
   };
+
+  componentDidMount() {
+    this.props.getCurrentProfile();
+  }
 
   onSubmit = values => {
     this.props.createProfile(values, history);
@@ -39,7 +43,6 @@ class CreateProfile extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-
     return (
       <div className="create-profile">
         <div className="container">
@@ -79,29 +82,28 @@ class CreateProfile extends Component {
   }
 }
 
-CreateProfile.propTypes = {
-  profile: PropTypes.object,
+EditProfile.propTypes = {
   errors: PropTypes.object.isRequired,
   createProfile: PropTypes.func.isRequired
 };
 
-CreateProfile = reduxForm({
+EditProfile = reduxForm({
   form: 'profileForm'
-})(CreateProfile);
+})(EditProfile);
 
 const mapStateToProps = state => {
   return {
-    profile: state.profiles,
-    errors: state.errors
+    errors: state.errors,
+    initialValues: state.profiles
   };
 };
 
-CreateProfile = connect(
+EditProfile = connect(
   mapStateToProps,
   {
     createProfile,
     getCurrentProfile
   }
-)(CreateProfile);
+)(EditProfile);
 
-export default CreateProfile;
+export default EditProfile;

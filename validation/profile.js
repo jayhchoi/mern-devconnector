@@ -17,7 +17,7 @@ module.exports = validateProfileInput = data => {
     errors.status = 'Status field is required';
   }
 
-  if (validator.isEmpty(skills)) {
+  if (typeof skills === String && validator.isEmpty(skills)) {
     errors.skills = 'Skills field is required';
   }
 

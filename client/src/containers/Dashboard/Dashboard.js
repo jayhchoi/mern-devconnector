@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -9,6 +9,8 @@ import {
   deleteAccount
 } from '../../actions/profiles.action';
 import { Spinner } from '../../components';
+import { history } from '../../utils';
+
 import ProfileButtons from './ProfileButtons';
 
 class Dashboard extends Component {
@@ -17,7 +19,7 @@ class Dashboard extends Component {
   }
 
   onDelete = () => {
-    this.props.deleteAccount(this.props.history);
+    this.props.deleteAccount(history);
   };
 
   renderContent() {
@@ -48,7 +50,7 @@ class Dashboard extends Component {
               onClick={this.onDelete}
               className="d-block btn btn-danger mt-3"
             >
-              Delete myy account
+              Delete my account
             </button>
           </div>
         );
@@ -92,4 +94,4 @@ export default connect(
     getCurrentProfile,
     deleteAccount
   }
-)(withRouter(Dashboard));
+)(Dashboard);
