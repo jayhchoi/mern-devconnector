@@ -14,7 +14,7 @@ module.exports = validateExperienceInput = data => {
   }
 
   if (validator.isEmpty(from)) {
-    errors.from = 'From field is required';
+    errors.from = 'From date field is required';
   }
 
   return {

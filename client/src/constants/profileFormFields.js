@@ -108,3 +108,93 @@ export const socialFields = [
     placeholder: 'Youtube Page URL'
   }
 ];
+
+export const experienceFields = [
+  {
+    name: 'title',
+    type: 'text',
+    component: 'input',
+    placeholder: '*Title'
+  },
+  {
+    name: 'company',
+    type: 'text',
+    component: 'input',
+    placeholder: '*Company'
+  },
+  {
+    name: 'location',
+    type: 'text',
+    component: 'input',
+    placeholder: 'Location'
+  },
+  {
+    name: 'from',
+    type: 'date',
+    component: 'input',
+    label: '*From Date'
+  },
+  {
+    name: 'to',
+    type: 'date',
+    component: 'input',
+    label: 'To Date'
+  },
+  {
+    name: 'current',
+    type: 'checkbox',
+    component: 'input',
+    placeholder: 'Current Job'
+  },
+  {
+    name: 'description',
+    type: 'text',
+    component: 'textarea',
+    placeholder: 'Description'
+  }
+];
+
+export const educationFields = [
+  {
+    name: 'school',
+    type: 'text',
+    component: 'input',
+    placeholder: '*School'
+  },
+  {
+    name: 'degree',
+    type: 'text',
+    component: 'input',
+    placeholder: '*Degree'
+  },
+  {
+    name: 'fieldofstudy',
+    type: 'text',
+    component: 'input',
+    placeholder: '*Field of Study'
+  },
+  {
+    name: 'from',
+    type: 'date',
+    component: 'input',
+    label: '*From Date'
+  },
+  {
+    name: 'to',
+    type: 'date',
+    component: 'input',
+    label: 'To Date'
+  },
+  {
+    name: 'current',
+    type: 'checkbox',
+    component: 'input',
+    placeholder: 'Current Education'
+  },
+  {
+    name: 'description',
+    type: 'text',
+    component: 'textarea',
+    placeholder: 'Description'
+  }
+];

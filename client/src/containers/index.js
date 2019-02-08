@@ -4,5 +4,18 @@ import Login from './Login';
 import Register from './Register';
 import CreateProfile from './CreateProfile';
 import EditProfile from './EditProfile';
+import AddExperience from './AddExperience';
+import AddEducation from './AddEducation';
+import Profiles from './Profiles';
 
-export { Dashboard, Landing, Login, Register, CreateProfile, EditProfile };
+export {
+  Dashboard,
+  Landing,
+  Login,
+  Register,
+  CreateProfile,
+  EditProfile,
+  AddExperience,
+  AddEducation,
+  Profiles
+};

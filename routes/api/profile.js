@@ -223,11 +223,11 @@ router.delete(
         }
 
         // Delete experiecne by exp_id
-        const removeIndex = _.findIndex(
-          profile.experience,
-          item => item._id === req.params.exp_id
-        );
-        profile.experience.splice(removeIndex);
+        const removeIndex = _.findIndex(profile.experience, [
+          '_id',
+          mongoose.Types.ObjectId(req.params.exp_id)
+        ]);
+        profile.experience.splice(removeIndex, 1);
 
         profile
           .save()
@@ -300,11 +300,11 @@ router.delete(
         }
 
         // Delete education by edu_id
-        const removeIndex = _.findIndex(
-          profile.education,
-          item => item._id === req.params.edu_id
-        );
-        profile.education.splice(removeIndex);
+        const removeIndex = _.findIndex(profile.education, [
+          '_id',
+          mongoose.Types.ObjectId(req.params.edu_id)
+        ]);
+        profile.education.splice(removeIndex, 1);
 
         profile
           .save()

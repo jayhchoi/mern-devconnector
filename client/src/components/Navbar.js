@@ -27,7 +27,7 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
+                <Link className="nav-link" to="/profiles">
                   {' '}
                   Developers
                 </Link>
@@ -36,22 +36,29 @@ class Navbar extends Component {
 
             <ul className="navbar-nav ml-auto">
               {isAuthenticated ? (
-                <li className="nav-item">
-                  <a
-                    href="/"
-                    className="nav-link"
-                    onClick={this.props.logoutUser}
-                  >
-                    <img
-                      className="rounded-circle"
-                      src={user.avatar}
-                      alt={user.name}
-                      style={{ width: '25px', marginRight: '5px' }}
-                      title="You must have a gravatar connected to your email to show your profile picture"
-                    />
-                    Logout
-                  </a>
-                </li>
+                <Fragment>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/dashboard">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      href="/"
+                      className="nav-link"
+                      onClick={this.props.logoutUser}
+                    >
+                      <img
+                        className="rounded-circle"
+                        src={user.avatar}
+                        alt={user.name}
+                        style={{ width: '25px', marginRight: '5px' }}
+                        title="You must have a gravatar connected to your email to show your profile picture"
+                      />
+                      Logout
+                    </a>
+                  </li>
+                </Fragment>
               ) : (
                 <Fragment>
                   <li className="nav-item">

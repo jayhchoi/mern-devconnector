@@ -6,9 +6,11 @@ import _ from 'lodash';
 
 import {
   getCurrentProfile,
-  deleteAccount
+  deleteAccount,
+  deleteExperience,
+  deleteEducation
 } from '../../actions/profiles.action';
-import { Spinner } from '../../components';
+import { Spinner, Experience, Education } from '../../components';
 import { history } from '../../utils';
 
 import ProfileButtons from './ProfileButtons';
@@ -26,7 +28,7 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
     const { profile } = this.props;
 
-    if (profile === null) {
+    if (!profile) {
       return <Spinner />;
     } else {
       if (_.isEmpty(profile)) {
@@ -46,6 +48,14 @@ class Dashboard extends Component {
               Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
             </p>
             <ProfileButtons />
+            <Experience
+              experience={profile.experience}
+              onDeleteClick={this.props.deleteExperience}
+            />
+            <Education
+              education={profile.education}
+              onDeleteClick={this.props.deleteEducation}
+            />
             <button
               onClick={this.onDelete}
               className="d-block btn btn-danger mt-3"
@@ -77,6 +87,8 @@ class Dashboard extends Component {
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   deleteAccount: PropTypes.func.isRequired,
+  deleteExperience: PropTypes.func.isRequired,
+  deleteEducation: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object
 };
@@ -84,7 +96,7 @@ Dashboard.propTypes = {
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    profile: state.profiles
+    profile: Object.values(state.profiles)[0] // Getting a single profile from profilesReducer
   };
 };
 
@@ -92,6 +104,8 @@ export default connect(
   mapStateToProps,
   {
     getCurrentProfile,
-    deleteAccount
+    deleteAccount,
+    deleteExperience,
+    deleteEducation
   }
 )(Dashboard);

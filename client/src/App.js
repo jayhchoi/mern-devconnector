@@ -26,7 +26,10 @@ import {
   Dashboard,
   Landing,
   CreateProfile,
-  EditProfile
+  EditProfile,
+  AddExperience,
+  AddEducation,
+  Profiles
 } from './containers';
 
 class App extends Component {
@@ -60,6 +63,7 @@ class App extends Component {
             render={props => <Register {...props} />}
           />
           <Route exact path="/login" render={props => <Login {...props} />} />
+          <Route exact path="/profiles" component={Profiles} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
           <PrivateRoute
             exact
@@ -67,6 +71,12 @@ class App extends Component {
             component={CreateProfile}
           />
           <PrivateRoute exact path="/edit-profile" component={EditProfile} />
+          <PrivateRoute
+            exact
+            path="/add-experience"
+            component={AddExperience}
+          />
+          <PrivateRoute exact path="/add-education" component={AddEducation} />
           <Footer />
         </div>
       </Router>

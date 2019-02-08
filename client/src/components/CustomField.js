@@ -10,7 +10,8 @@ const CustomField = ({
   errors,
   options,
   prepend,
-  icon
+  icon,
+  label
 }) => {
   if (prepend) {
     return (
@@ -34,8 +35,26 @@ const CustomField = ({
     );
   }
 
+  if (type === 'checkbox') {
+    return (
+      <div className="form-group form-check">
+        <Field
+          id={name}
+          component={component}
+          type={type}
+          name={name}
+          className="form-check-input"
+        />
+        <label htmlFor={name} className="form-check-label">
+          {placeholder}
+        </label>
+      </div>
+    );
+  }
+
   return (
     <div className="form-group">
+      {label ? <label htmlFor={name}>{label}</label> : null}
       <Field
         component={component}
         type={type}
