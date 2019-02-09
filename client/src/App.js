@@ -29,7 +29,8 @@ import {
   EditProfile,
   AddExperience,
   AddEducation,
-  Profiles
+  Profiles,
+  ProfileDetail
 } from './containers';
 
 class App extends Component {
@@ -64,6 +65,7 @@ class App extends Component {
           />
           <Route exact path="/login" render={props => <Login {...props} />} />
           <Route exact path="/profiles" component={Profiles} />
+          <Route exact path="/profile/:handle" component={ProfileDetail} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
           <PrivateRoute
             exact

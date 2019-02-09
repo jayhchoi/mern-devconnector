@@ -98,7 +98,7 @@ EditProfile = reduxForm({
 const mapStateToProps = state => {
   return {
     errors: state.errors,
-    initialValues: state.profiles
+    initialValues: Object.values(state.profiles)[0]
   };
 };
 

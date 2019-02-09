@@ -7,6 +7,7 @@ import EditProfile from './EditProfile';
 import AddExperience from './AddExperience';
 import AddEducation from './AddEducation';
 import Profiles from './Profiles';
+import ProfileDetail from './ProfileDetail';
 
 export {
   Dashboard,
@@ -17,5 +18,6 @@ export {
   EditProfile,
   AddExperience,
   AddEducation,
-  Profiles
+  Profiles,
+  ProfileDetail
 };

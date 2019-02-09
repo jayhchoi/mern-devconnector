@@ -45,7 +45,7 @@ class Profiles extends Component {
 
 Profiles.propTypes = {
   getProfiles: PropTypes.func.isRequired,
-  profiles: PropTypes.object.isRequired
+  profiles: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => {

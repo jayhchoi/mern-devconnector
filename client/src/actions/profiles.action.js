@@ -81,6 +81,25 @@ export const getCurrentProfile = () => async dispatch => {
   }
 };
 
+export const getProfileByHandle = handle => async dispatch => {
+  try {
+    const res = await axios.get(`/api/profile/handle/${handle}`);
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: SET_ERRORS,
+      payload: err.response.data
+    });
+    dispatch({
+      type: GET_PROFILE,
+      payload: {}
+    });
+  }
+};
+
 export const getProfiles = () => async dispatch => {
   try {
     const res = await axios.get('/api/profile/all');

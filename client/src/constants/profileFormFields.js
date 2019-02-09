@@ -53,7 +53,7 @@ export const profileFields = [
     placeholder: '*Skills'
   },
   {
-    name: 'github',
+    name: 'githubusername',
     type: 'text',
     component: 'input',
     placeholder: 'Github Username'
