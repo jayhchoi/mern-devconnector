@@ -5,6 +5,7 @@ import Spinner from './Spinner';
 import PrivateRoute from './PrivateRoute';
 import Experience from './Experience';
 import Education from './Education';
+import NotFound from './NotFound';
 
 export {
   Footer,
@@ -13,5 +14,6 @@ export {
   Spinner,
   CustomField,
   Experience,
-  Education
+  Education,
+  NotFound
 };

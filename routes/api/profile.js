@@ -61,8 +61,9 @@ router.post(
     const profileFields = req.body;
 
     profileFields.user = req.user._id;
-    if (profileFields.skills && typeof profileFields.skills === String)
+    if (profileFields.skills && typeof profileFields.skills === String) {
       profileFields.skills = profileFields.skills.split(','); // convert string to array
+    }
 
     profileFields.social = {
       facebook: profileFields.facebook,

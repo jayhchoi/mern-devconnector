@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { Spinner } from '../../components';
 import { getProfileByHandle } from '../../actions/profiles.action';
+import { history } from '../../utils';
 
 import ProfileHeader from './ProfileHeader';
 import ProfileAbout from './ProfileAbout';
@@ -15,6 +16,12 @@ class ProfileDetail extends Component {
   componentDidMount() {
     if (this.props.match.params.handle) {
       this.props.getProfileByHandle(this.props.match.params.handle);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.profile.undefined) {
+      history.push('/not-found');
     }
   }
 
@@ -61,9 +68,9 @@ class ProfileDetail extends Component {
   }
 }
 
-ProfileDetail.PropTypes = {
-  profile: PropTypes.object.isRequired,
-  getProfileByHandle: PropTypes.func.isRequired
+ProfileDetail.propTypes = {
+  getProfileByHandle: PropTypes.func.isRequired,
+  profile: PropTypes.object
 };
 
 const mapStateToProps = state => {

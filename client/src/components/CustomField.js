@@ -15,10 +15,10 @@ const CustomField = ({
 }) => {
   if (prepend) {
     return (
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <i class={icon} />
+      <div className="input-group mb-3">
+        <div className="input-group-prepend">
+          <span className="input-group-text">
+            <i className={icon} />
           </span>
         </div>
         <Field
