@@ -3,7 +3,9 @@ import {
   GET_PROFILE,
   SET_ERRORS,
   SET_CURRENT_USER,
-  GET_PROFILES
+  GET_PROFILES,
+  CLEAR_PROFILES,
+  FETCHING_PROFILES
 } from './types';
 
 export const deleteExperience = exp_id => async dispatch => {
@@ -63,11 +65,14 @@ export const addEducation = (values, history) => async dispatch => {
 };
 
 export const getCurrentProfile = () => async dispatch => {
+  dispatch({
+    type: FETCHING_PROFILES
+  });
   try {
     const res = await axios.get('/api/profile');
     dispatch({
       type: GET_PROFILE,
-      payload: res.data
+      payload: res.data // object of single profile
     });
   } catch (err) {
     dispatch({
@@ -75,13 +80,15 @@ export const getCurrentProfile = () => async dispatch => {
       payload: err.response.data
     });
     dispatch({
-      type: GET_PROFILE,
-      payload: {}
+      type: CLEAR_PROFILES
     });
   }
 };
 
 export const getProfileByHandle = handle => async dispatch => {
+  dispatch({
+    type: FETCHING_PROFILES
+  });
   try {
     const res = await axios.get(`/api/profile/handle/${handle}`);
     dispatch({
@@ -94,13 +101,15 @@ export const getProfileByHandle = handle => async dispatch => {
       payload: err.response.data
     });
     dispatch({
-      type: GET_PROFILE,
-      payload: {}
+      type: CLEAR_PROFILES
     });
   }
 };
 
 export const getProfiles = () => async dispatch => {
+  dispatch({
+    type: FETCHING_PROFILES
+  });
   try {
     const res = await axios.get('/api/profile/all');
     dispatch({
@@ -113,8 +122,7 @@ export const getProfiles = () => async dispatch => {
       payload: err.response.data
     });
     dispatch({
-      type: GET_PROFILES,
-      payload: {}
+      type: CLEAR_PROFILES
     });
   }
 };

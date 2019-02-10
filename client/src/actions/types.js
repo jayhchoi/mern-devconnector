@@ -7,4 +7,6 @@ export const UNSET_ERRORS = 'UNSET_ERRORS';
 // Profiles
 export const GET_PROFILES = 'GET_PROFILES';
 export const GET_PROFILE = 'GET_PROFILE';
+export const FETCHING_PROFILES = 'FETCHING_PROFILES';
+export const CLEAR_PROFILES = 'CLEAR_PROFILES';
 export const CREATE_PROFILE = 'CREATE_PROFILE';

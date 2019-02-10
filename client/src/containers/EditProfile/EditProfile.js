@@ -88,7 +88,8 @@ class EditProfile extends Component {
 
 EditProfile.propTypes = {
   errors: PropTypes.object.isRequired,
-  createProfile: PropTypes.func.isRequired
+  createProfile: PropTypes.func.isRequired,
+  initialValues: PropTypes.object
 };
 
 EditProfile = reduxForm({
@@ -98,7 +99,7 @@ EditProfile = reduxForm({
 const mapStateToProps = state => {
   return {
     errors: state.errors,
-    initialValues: Object.values(state.profiles)[0]
+    initialValues: Object.values(state.profile.profiles)[0]
   };
 };
 

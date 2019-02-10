@@ -26,9 +26,10 @@ class Dashboard extends Component {
 
   renderContent() {
     const { user } = this.props.auth;
-    const { profile } = this.props;
+    const { profiles, isFetching } = this.props.profile;
+    const profile = Object.values(profiles)[0];
 
-    if (!profile) {
+    if (isFetching) {
       return <Spinner />;
     } else {
       if (_.isEmpty(profile)) {
@@ -90,13 +91,13 @@ Dashboard.propTypes = {
   deleteExperience: PropTypes.func.isRequired,
   deleteEducation: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object
+  profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    profile: Object.values(state.profiles)[0] // Getting a single profile from profilesReducer
+    profile: state.profile // Getting a single profile from profilesReducer
   };
 };
 

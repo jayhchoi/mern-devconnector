@@ -54,7 +54,6 @@ class AddExperience extends Component {
 }
 
 AddExperience.proptypes = {
-  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   addExperience: PropTypes.func.isRequired
 };
@@ -76,7 +75,6 @@ AddExperience = reduxForm({
 
 const mapStateToProps = state => {
   return {
-    profile: state.profiles,
     errors: state.errors
   };
 };

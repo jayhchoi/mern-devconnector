@@ -84,7 +84,6 @@ class CreateProfile extends Component {
 }
 
 CreateProfile.propTypes = {
-  profile: PropTypes.object,
   errors: PropTypes.object.isRequired,
   createProfile: PropTypes.func.isRequired
 };
@@ -95,7 +94,6 @@ CreateProfile = reduxForm({
 
 const mapStateToProps = state => {
   return {
-    profile: state.profiles,
     errors: state.errors
   };
 };

@@ -54,7 +54,6 @@ class AddEducation extends Component {
 }
 
 AddEducation.proptypes = {
-  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   addEducation: PropTypes.func.isRequired
 };
@@ -76,7 +75,6 @@ AddEducation = reduxForm({
 
 const mapStateToProps = state => {
   return {
-    profile: state.profiles,
     errors: state.errors
   };
 };

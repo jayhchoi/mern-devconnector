@@ -13,14 +13,21 @@ class Profiles extends Component {
   }
 
   renderContent() {
-    const { profiles } = this.props;
+    let { profiles, isFetching } = this.props.profile;
 
-    if (_.isEmpty(profiles) || profiles === null) {
+    // convert object to array
+    profiles = Object.values(profiles);
+
+    if (isFetching) {
       return <Spinner />;
     } else {
-      return profiles.map(profile => (
-        <Profile key={profile._id} profile={profile} />
-      ));
+      if (_.isEmpty(profiles)) {
+        return <p className="lead">There's no profile</p>;
+      } else {
+        return profiles.map(profile => (
+          <Profile key={profile._id} profile={profile} />
+        ));
+      }
     }
   }
 
@@ -45,12 +52,12 @@ class Profiles extends Component {
 
 Profiles.propTypes = {
   getProfiles: PropTypes.func.isRequired,
-  profiles: PropTypes.array.isRequired
+  profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    profiles: Object.values(state.profiles)
+    profile: state.profile
   };
 };
 
