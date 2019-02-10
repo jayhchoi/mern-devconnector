@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import CustomField from '../../components/CustomField';
+import CustomField from '../../components/CustomField/CustomField';
 import loginFormFields from './loginFormFields';
 
 import { loginUser } from '../../actions/auth.action';

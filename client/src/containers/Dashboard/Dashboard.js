@@ -11,7 +11,7 @@ import {
   deleteEducation
 } from '../../actions/profiles.action';
 import { Spinner, Experience, Education } from '../../components';
-import { history } from '../../utils';
+import history from '../../utils/history';
 
 import ProfileButtons from './ProfileButtons';
 

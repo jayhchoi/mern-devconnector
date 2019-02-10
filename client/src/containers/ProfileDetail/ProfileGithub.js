@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import keys from '../../configs/keys';
+import keys from '../../constants/keys';
 
 class ProfileGithub extends Component {
   state = {

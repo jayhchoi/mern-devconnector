@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import CustomField from '../../components/CustomField';
+import CustomField from '../../components/CustomField/CustomField';
 import registerFormFields from './registerFormFields';
 
 import { registerUser } from '../../actions/auth.action';

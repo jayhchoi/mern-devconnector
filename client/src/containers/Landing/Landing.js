@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { history } from '../../utils';
+import history from '../../utils/history';
 
 class Landing extends Component {
   componentWillMount() {

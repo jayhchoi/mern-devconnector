@@ -8,16 +8,17 @@ import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
 
 // UTILS
-import { history, setAuthToken } from './utils';
+import history from '../utils/history';
+import setAuthToken from '../utils/setAuthToken';
 
 // ACTIONS
-import { logoutUser, setCurrentUser } from './actions/auth.action';
+import { logoutUser, setCurrentUser } from '../actions/auth.action';
 
 // STYLES
 import './App.css';
 
 // COMPONENTS
-import { Navbar, Footer, PrivateRoute, NotFound } from './components';
+import { Navbar, Footer, PrivateRoute, NotFound } from '../components';
 
 // CONTAINERS
 import {
@@ -30,8 +31,9 @@ import {
   AddExperience,
   AddEducation,
   Profiles,
-  ProfileDetail
-} from './containers';
+  ProfileDetail,
+  Posts
+} from '../containers';
 
 class App extends Component {
   componentWillMount() {
@@ -84,6 +86,7 @@ class App extends Component {
               path="/add-education"
               component={AddEducation}
             />
+            <PrivateRoute exact path="/feed" component={Posts} />
             <Route component={NotFound} />
           </Switch>
           <Footer />

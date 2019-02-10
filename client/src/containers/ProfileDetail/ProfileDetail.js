@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 import { Spinner } from '../../components';
 import { getProfileByHandle } from '../../actions/profiles.action';
-import { history } from '../../utils';
 
 import ProfileHeader from './ProfileHeader';
 import ProfileAbout from './ProfileAbout';

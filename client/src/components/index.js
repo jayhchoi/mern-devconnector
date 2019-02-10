@@ -1,19 +1,8 @@
-import Footer from './Footer';
-import Navbar from './Navbar';
-import CustomField from './CustomField';
-import Spinner from './Spinner';
-import PrivateRoute from './PrivateRoute';
-import Experience from './Experience';
-import Education from './Education';
-import NotFound from './NotFound';
-
-export {
-  Footer,
-  Navbar,
-  PrivateRoute,
-  Spinner,
-  CustomField,
-  Experience,
-  Education,
-  NotFound
-};
+export { default as Footer } from './Footer/Footer';
+export { default as Navbar } from './Navbar/Navbar';
+export { default as CustomField } from './CustomField/CustomField';
+export { default as Spinner } from './Spinner/Spinner';
+export { default as PrivateRoute } from './PrivateRoute/PrivateRoute';
+export { default as Experience } from './Experience/Experience';
+export { default as Education } from './Education/Education';
+export { default as NotFound } from './NotFound/NotFound';

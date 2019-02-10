@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { logoutUser } from '../actions/auth.action';
+import { logoutUser } from '../../actions/auth.action';
 
 class Navbar extends Component {
   render() {
@@ -37,6 +37,11 @@ class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
               {isAuthenticated ? (
                 <Fragment>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/feed">
+                      Post Feed
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/dashboard">
                       Dashboard

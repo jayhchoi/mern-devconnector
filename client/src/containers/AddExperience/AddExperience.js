@@ -7,7 +7,7 @@ import { reduxForm } from 'redux-form';
 import { addExperience } from '../../actions/profiles.action';
 import { experienceFields } from '../../constants/profileFormFields';
 
-import { history } from '../../utils';
+import history from '../../utils/history';
 import { CustomField } from '../../components';
 
 class AddExperience extends Component {

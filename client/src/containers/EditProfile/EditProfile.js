@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { history } from '../../utils';
+import history from '../../utils/history';
 
 import { CustomField } from '../../components';
 import { profileFields, socialFields } from '../../constants/profileFormFields';

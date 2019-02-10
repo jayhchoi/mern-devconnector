@@ -7,7 +7,7 @@ import { reduxForm } from 'redux-form';
 import { addEducation } from '../../actions/profiles.action';
 import { educationFields } from '../../constants/profileFormFields';
 
-import { history } from '../../utils';
+import history from '../../utils/history';
 import { CustomField } from '../../components';
 
 class AddEducation extends Component {

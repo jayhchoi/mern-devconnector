@@ -27,7 +27,7 @@ const CustomField = ({
           name={name}
           placeholder={placeholder}
           className={`form-control form-control-lg ${
-            errors[name] ? 'is-invalid' : ''
+            errors && errors[name] ? 'is-invalid' : ''
           }`}
         />
         <div className="invalid-feedback">{errors[name]}</div>
@@ -61,7 +61,7 @@ const CustomField = ({
         name={name}
         placeholder={placeholder}
         className={`form-control form-control-lg ${
-          errors[name] ? 'is-invalid' : ''
+          errors && errors[name] ? 'is-invalid' : ''
         }`}
       >
         {options
@@ -72,7 +72,7 @@ const CustomField = ({
             ))
           : null}
       </Field>
-      <div className="invalid-feedback">{errors[name]}</div>
+      <div className="invalid-feedback">{errors ? errors[name] : ''}</div>
     </div>
   );
 };
