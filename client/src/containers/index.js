@@ -9,3 +9,4 @@ export { default as AddEducation } from './AddEducation/AddEducation';
 export { default as Profiles } from './Profiles/Profiles';
 export { default as ProfileDetail } from './ProfileDetail/ProfileDetail';
 export { default as Posts } from './Posts/Posts';
+export { default as PostDetail } from './PostDetail/PostDetail';

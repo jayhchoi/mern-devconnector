@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     const posts = await Post.find({}).sort({ _id: -1 });
     res.send(posts);
   } catch (err) {
-    res.status(404).send(err);
+    res.status(404).send({ post: err.message });
   }
 });
 
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
     if (!post) throw Error('Post not found by the ID');
     res.send(post);
   } catch (err) {
-    res.status(404).send(err.name + ': ' + err.message);
+    res.status(404).send({ post: err.message });
   }
 });
 
@@ -58,7 +58,7 @@ router.post(
       const post = await newPost.save();
       res.send(post);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(400).send({ post: err.message });
     }
   }
 );
@@ -80,7 +80,7 @@ router.delete(
       await post.remove();
       res.send();
     } catch (err) {
-      res.status(400).send(err.name + ': ' + err.message);
+      res.status(400).send({ post: err.message });
     }
   }
 );
@@ -108,7 +108,7 @@ router.post(
       const updatedPost = await post.save();
       res.send(updatedPost);
     } catch (err) {
-      res.status(400).send(err.name + ': ' + err.message);
+      res.status(400).send({ like: err.message });
     }
   }
 );
@@ -140,7 +140,7 @@ router.post(
       const updatedPost = await post.save();
       res.send(updatedPost);
     } catch (err) {
-      res.status(400).send(err.name + ': ' + err.message);
+      res.status(400).send({ unlike: err.message });
     }
   }
 );
@@ -173,7 +173,7 @@ router.post(
       const updatedPost = await post.save();
       res.send(updatedPost);
     } catch (err) {
-      res.status(400).send(err.name + ': ' + err.message);
+      res.status(400).send({ comment: err.message });
     }
   }
 );
@@ -209,7 +209,7 @@ router.delete(
       const updatedPost = await post.save();
       res.send(updatedPost);
     } catch (err) {
-      res.status(400).send(err.name + ': ' + err.message);
+      res.status(400).send({ comment: err.message });
     }
   }
 );

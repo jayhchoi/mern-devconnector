@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import keys from '../../constants/keys';
-
 class ProfileGithub extends Component {
   state = {
     repos: []
@@ -13,8 +11,8 @@ class ProfileGithub extends Component {
 
     const count = 5,
       sort = 'created: asc',
-      clientId = keys.CLIENT_ID,
-      clientSecret = keys.CLIENT_SECRET;
+      clientId = process.env.REACT_APP_GITHUB_CLIENT_ID,
+      clientSecret = process.env.REACT_APP_GITHUB_SECRET;
 
     fetch(
       `https://api.github.com/users/${username}/repos?per_page=${count}&sort=${sort}&client_id=${clientId}&client_secret=${clientSecret}`

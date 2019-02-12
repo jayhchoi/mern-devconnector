@@ -5,7 +5,7 @@ const initialState = {};
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ERRORS:
-      return action.payload;
+      return { ...state, ...action.payload };
     case UNSET_ERRORS:
       return {};
     default:

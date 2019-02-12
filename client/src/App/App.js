@@ -32,7 +32,8 @@ import {
   AddEducation,
   Profiles,
   ProfileDetail,
-  Posts
+  Posts,
+  PostDetail
 } from '../containers';
 
 class App extends Component {
@@ -87,6 +88,7 @@ class App extends Component {
               component={AddEducation}
             />
             <PrivateRoute exact path="/feed" component={Posts} />
+            <PrivateRoute exact path="/post/:id" component={PostDetail} />
             <Route component={NotFound} />
           </Switch>
           <Footer />
