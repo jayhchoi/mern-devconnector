@@ -1,4 +1,5 @@
 import React from 'react';
+import { capitalizeFirstChar } from '../../utils/helpers';
 
 const ProfileHeader = ({ profile }) => {
   if (profile) {
@@ -18,7 +19,7 @@ const ProfileHeader = ({ profile }) => {
             <div className="text-center">
               <h1 className="display-4 text-center">{profile.user.name}</h1>
               <p className="lead text-center">
-                {profile.status}{' '}
+                {capitalizeFirstChar(profile.status)}{' '}
                 {profile.company ? `at ${profile.company}` : null}
               </p>
               {profile.location ? <p>{profile.location}</p> : null}
@@ -71,6 +72,16 @@ const ProfileHeader = ({ profile }) => {
                     rel="noopener noreferrer"
                   >
                     <i className="fab fa-instagram fa-2x" />
+                  </a>
+                ) : null}
+                {profile.social && profile.social.youtube ? (
+                  <a
+                    className="text-white p-2"
+                    href={profile.social.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fab fa-youtube fa-2x" />
                   </a>
                 ) : null}
               </p>

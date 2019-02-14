@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const { ObjectId } = require('mongoose').Types;
 const passport = require('passport');
 const _ = require('lodash');
 
-const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Profile = require('../../models/Profile');
 
 const validateProfileInput = require('../../validation/profile');
 const validateExperienceInput = require('../../validation/experience');
@@ -23,8 +23,6 @@ router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    const errors = {};
-
     try {
       const profile = await Profile.findOne({ user: req.user._id }).populate(
         'user',
@@ -33,7 +31,7 @@ router.get(
 
       if (!profile) {
         // It's OK not to have a profile, thus NO 404 ERROR
-        return res.send({});
+        return res.send(null); // This actually returns an empty string "" rather than 'null'
       }
 
       res.send(profile);
@@ -49,7 +47,7 @@ router.get(
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
+  async (req, res) => {
     // Validation
     const { errors, isValid } = validateProfileInput(req.body);
 
@@ -58,54 +56,66 @@ router.post(
     }
 
     // Get fields
-    const profileFields = req.body;
+    console.log(req.body);
+    const newProfile = new Profile({
+      ...req.body,
+      social: {
+        facebook: req.body.facebook,
+        twitter: req.body.twitter,
+        linkedin: req.body.linkedin,
+        youtube: req.body.youtube,
+        instagram: req.body.instagram
+      },
+      user: req.user._id
+    });
 
-    profileFields.user = req.user._id;
-    if (profileFields.skills && typeof profileFields.skills === String) {
-      profileFields.skills = profileFields.skills.split(','); // convert string to array
-    }
+    // convert string to array
+    if (newProfile.skills.length === 1)
+      newProfile.skills = newProfile.skills[0].split(',');
 
-    profileFields.social = {
-      facebook: profileFields.facebook,
-      twitter: profileFields.twitter,
-      instagram: profileFields.instagram,
-      youtube: profileFields.youtube,
-      linkedin: profileFields.linkedin
-    };
+    try {
+      // Check for profile
+      const profile = await Profile.findOne({ user: req.user._id });
 
-    Profile.findOne({ user: req.user._id })
-      .then(profile => {
-        if (profile) {
-          // Update profile
-          Profile.findOneAndUpdate(
+      // If profile already exists, update it
+      // Again, if mongoose does not find a doc, it returns 'null' (NOT AN EMPTY OBJ)
+      if (profile) {
+        try {
+          const updatedProfile = await Profile.findOneAndUpdate(
             { user: req.user._id },
-            { $set: profileFields },
+            { $set: newProfile },
             { new: true }
-          )
-            .then(profile => res.send(profile))
-            .catch(err => res.status(400).send(err));
-        } else {
-          // Craete profile
-          // Check if handle exists
-          Profile.findOne({ handle: profileFields.handle })
-            .then(profile => {
-              if (profile) {
-                errors.handle = 'That handle already exists';
-                return res.status(400).send(errors);
-              }
+          );
 
-              // Save profile
-              new Profile(profileFields)
-                .save()
-                .then(profile => res.send(profile))
-                .catch(err => res.status(400).send(err));
-            })
-            .catch(err => res.status(400).send(err));
+          res.send(updatedProfile);
+        } catch (err) {
+          res.status(400).send(err);
         }
-      })
-      .catch(err => res.status(400).send(err));
+      } else {
+        // Create a profile
+        try {
+          // Check if handle exists
+          const existingProfile = await Profile.findOne({
+            handle: newProfile.handle
+          });
+          if (existingProfile) {
+            errors.handle = 'That handle already exists';
+            return res.status(400).send(errors);
+          }
+
+          const savedProfile = await newProfile.save();
+          res.send(savedProfile);
+        } catch (err) {
+          res.status(400).send(err);
+        }
+      }
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 );
+
+// ##################### Start from here #############################
 
 // @route GET api/profile/handle/:handle
 // @desc  Fetch user profile by handle
@@ -226,7 +236,7 @@ router.delete(
         // Delete experiecne by exp_id
         const removeIndex = _.findIndex(profile.experience, [
           '_id',
-          mongoose.Types.ObjectId(req.params.exp_id)
+          ObjectId(req.params.exp_id)
         ]);
         profile.experience.splice(removeIndex, 1);
 
@@ -303,7 +313,7 @@ router.delete(
         // Delete education by edu_id
         const removeIndex = _.findIndex(profile.education, [
           '_id',
-          mongoose.Types.ObjectId(req.params.edu_id)
+          ObjectId(req.params.edu_id)
         ]);
         profile.education.splice(removeIndex, 1);
 

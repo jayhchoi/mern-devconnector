@@ -3,14 +3,15 @@ const { Schema } = mongoose;
 const _ = require('lodash');
 
 const userSchema = new Schema({
+  // Required
   name: {
     type: String,
     required: true
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    required: true
   },
   password: {
     type: String,
@@ -22,12 +23,12 @@ const userSchema = new Schema({
   }
 });
 
-// Overriding given method to pick what fields to send
+// Overriding given method to pick what fields to send res
 userSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email', 'name', 'avatar']);
+  return _.omit(userObject, ['password']);
 };
 
 module.exports = User = mongoose.model('User', userSchema);

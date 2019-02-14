@@ -18,17 +18,16 @@ export const registerUser = (values, history) => async dispatch => {
 
 export const loginUser = (values, history) => async dispatch => {
   try {
-    const res = await axios.post('/api/users/login', values);
+    const res = await axios.post('/api/users/login', values); // values: email & password
     const { token } = res.data;
 
     localStorage.setItem('jwt', token);
     setAuthToken(token); // Set http header
 
-    const decoded = jwtDecode(token);
-
+    const decoded = jwtDecode(token); // decoded = { _id, name, avatar, email }
     dispatch(setCurrentUser(decoded));
 
-    history.push('/');
+    history.push('/dashboard');
   } catch (err) {
     dispatch({
       type: SET_ERRORS,

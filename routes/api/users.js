@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/User');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const _ = require('lodash');
 
+const User = require('../../models/User');
 const { SECRET_OR_KEY } = require('../../config/keys');
 
 const validateRegisterInput = require('../../validation/register');
@@ -21,7 +20,7 @@ router.get('/test', (req, res) => res.send({ msg: 'Users routes works' }));
 // @desc  Register user
 // @access  Public
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email } = req.body;
 
   // Input validation
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -37,6 +36,7 @@ router.post('/register', async (req, res) => {
       errors.email = 'Email already exists';
       return res.status(400).send(errors);
     } else {
+      // user === null
       // Get avatar from gravatar
       const avatar = gravatar.url(email, {
         s: '200', // Size
@@ -45,9 +45,7 @@ router.post('/register', async (req, res) => {
       });
 
       const newUser = new User({
-        name,
-        email,
-        password,
+        ...req.body,
         avatar
       });
 
@@ -56,7 +54,7 @@ router.post('/register', async (req, res) => {
         bcrypt.hash(newUser.password, salt, async (err, hash) => {
           try {
             newUser.password = hash;
-            const user = await newUser.save();
+            const user = await newUser.save(); // save is async function that returns the saved document
             res.send(user);
           } catch (err) {
             res.status(400).send(err);
@@ -85,18 +83,20 @@ router.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    // Check for user
+    // User not exist
     if (!user) {
       errors.email = 'User not found';
       return res.status(404).send(errors);
     }
 
     // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password); // compares string vs. the hashed
 
     if (isMatch) {
       // Create token
       const payload = {
+        // This is data to be tokenized: in turn, these data is contained in the token
+        // All user attributes except for password
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -104,6 +104,7 @@ router.post('/login', async (req, res) => {
       };
 
       const token = jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '24h' });
+
       res.send({ success: true, token: 'Bearer ' + token });
     } else {
       errors.password = 'Password incorrect';
@@ -122,7 +123,7 @@ router.get(
   '/current',
   passport.authenticate('jwt', { session: false }), // This is what the JwtStrategy config was for
   (req, res) => {
-    res.send(_.pick(req.user, ['_id', 'name', 'email']));
+    res.send(req.user);
   }
 );
 

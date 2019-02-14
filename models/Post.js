@@ -2,20 +2,24 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const postSchema = new Schema({
+  // Required
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User' // One-to-one relationship
   },
   text: {
     type: String,
     required: true
   },
   name: {
-    type: String
+    type: String,
+    required: true
   },
   avatar: {
-    type: String
+    type: String,
+    required: true
   },
+  // Optional
   updated: {
     type: Date
   },
@@ -29,6 +33,7 @@ const postSchema = new Schema({
   ],
   comments: [
     {
+      // Required
       user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -38,10 +43,12 @@ const postSchema = new Schema({
         required: true
       },
       name: {
-        type: String
+        type: String,
+        required: true
       },
       avatar: {
-        type: String
+        type: String,
+        required: true
       }
     }
   ]

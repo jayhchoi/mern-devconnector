@@ -2,15 +2,25 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const profileSchema = new Schema({
+  // Required
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User' // One-to-one relationship
   },
   handle: {
     type: String,
-    required: true,
-    max: 40
+    max: 40,
+    required: true
   },
+  status: {
+    type: String,
+    required: true
+  },
+  skills: {
+    type: [String], // Array of strings
+    required: true
+  },
+  // Optional
   company: {
     type: String
   },
@@ -19,14 +29,6 @@ const profileSchema = new Schema({
   },
   location: {
     type: String
-  },
-  status: {
-    type: String,
-    required: true
-  },
-  skills: {
-    type: [String],
-    required: true
   },
   bio: {
     type: String
@@ -37,6 +39,7 @@ const profileSchema = new Schema({
   experience: [
     // Array of objects
     {
+      // Required
       title: {
         type: String,
         required: true
@@ -45,12 +48,13 @@ const profileSchema = new Schema({
         type: String,
         required: true
       },
-      location: {
-        type: String
-      },
       from: {
         type: Date,
         required: true
+      },
+      // Optional
+      location: {
+        type: String
       },
       to: {
         type: Date
@@ -66,6 +70,7 @@ const profileSchema = new Schema({
   ],
   education: [
     {
+      // Required
       school: {
         type: String,
         required: true
@@ -82,6 +87,7 @@ const profileSchema = new Schema({
         type: Date,
         required: true
       },
+      // Optional
       to: {
         type: Date
       },
@@ -96,12 +102,6 @@ const profileSchema = new Schema({
   ],
   social: {
     // Object
-    youtube: {
-      type: String
-    },
-    twitter: {
-      type: String
-    },
     facebook: {
       type: String
     },
@@ -109,6 +109,12 @@ const profileSchema = new Schema({
       type: String
     },
     instagram: {
+      type: String
+    },
+    youtube: {
+      type: String
+    },
+    twitter: {
       type: String
     }
   }

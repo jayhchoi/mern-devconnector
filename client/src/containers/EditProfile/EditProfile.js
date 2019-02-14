@@ -97,9 +97,14 @@ EditProfile = reduxForm({
 })(EditProfile);
 
 const mapStateToProps = state => {
+  const profile = Object.values(state.profile.profiles)[0];
+
   return {
     errors: state.errors,
-    initialValues: Object.values(state.profile.profiles)[0]
+    initialValues: {
+      ...profile,
+      ...profile.social
+    }
   };
 };
 

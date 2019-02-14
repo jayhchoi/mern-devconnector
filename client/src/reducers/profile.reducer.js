@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
     case GET_PROFILE:
       return {
         ...state,
-        profiles: _.isEmpty(action.payload)
+        profiles: !action.payload
           ? {}
           : { [action.payload._id]: action.payload }, // single profile
         isFetching: false
