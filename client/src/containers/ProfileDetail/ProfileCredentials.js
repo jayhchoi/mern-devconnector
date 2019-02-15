@@ -1,5 +1,6 @@
 import React from 'react';
 import Moment from 'react-moment';
+import { Link } from 'react-router-dom';
 
 const ProfileCredentials = ({ experience, education }) => {
   const experiences = experience.map(exp => (
@@ -51,16 +52,34 @@ const ProfileCredentials = ({ experience, education }) => {
 
   return (
     <div className="row">
-      <div className="col-md-6">
+      <div className="col-md-6 mt-2">
         <h3 className="text-center text-info">Experience</h3>
         <ul className="list-group">
-          {experiences.length > 0 ? experiences : 'Empty'}
+          {experiences.length > 0 ? (
+            experiences
+          ) : (
+            <div
+              style={{ border: 'solid rgba(0,0,0,.125) 1px', height: '100%' }}
+            >
+              <Link to="/add-experience" className="my-5 d-block">
+                <p className="text-center">Click to add experience</p>
+              </Link>
+            </div>
+          )}
         </ul>
       </div>
-      <div className="col-md-6">
+      <div className="col-md-6 mt-2">
         <h3 className="text-center text-info">Education</h3>
         <ul className="list-group">
-          {educations.length > 0 ? educations : 'Empty'}
+          {educations.length > 0 ? (
+            educations
+          ) : (
+            <div style={{ border: 'solid rgba(0,0,0,.125) 1px' }}>
+              <Link to="/add-education" className="my-5 d-block">
+                <p className="text-center">Click to add education</p>
+              </Link>
+            </div>
+          )}
         </ul>
       </div>
     </div>

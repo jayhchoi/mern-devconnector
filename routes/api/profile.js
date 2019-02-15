@@ -48,66 +48,58 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    // Validation
-    const { errors, isValid } = validateProfileInput(req.body);
-
-    if (!isValid) {
-      return res.status(400).send(errors);
-    }
-
-    // Get fields
-    console.log(req.body);
-    const newProfile = new Profile({
-      ...req.body,
-      social: {
-        facebook: req.body.facebook,
-        twitter: req.body.twitter,
-        linkedin: req.body.linkedin,
-        youtube: req.body.youtube,
-        instagram: req.body.instagram
-      },
-      user: req.user._id
-    });
-
-    // convert string to array
-    if (newProfile.skills.length === 1)
-      newProfile.skills = newProfile.skills[0].split(',');
-
     try {
+      // Validation
+      const { errors, isValid } = validateProfileInput(req.body);
+
+      if (!isValid) {
+        return res.status(400).send(errors);
+      }
+
+      // Get fields
+      console.log(req.body);
+      const newProfile = new Profile({
+        ...req.body,
+        social: {
+          facebook: req.body.facebook,
+          twitter: req.body.twitter,
+          linkedin: req.body.linkedin,
+          youtube: req.body.youtube,
+          instagram: req.body.instagram
+        },
+        user: req.user._id
+      });
+
+      // convert string to array
+      if (newProfile.skills.length === 1)
+        newProfile.skills = newProfile.skills[0].split(',');
+
       // Check for profile
       const profile = await Profile.findOne({ user: req.user._id });
 
       // If profile already exists, update it
       // Again, if mongoose does not find a doc, it returns 'null' (NOT AN EMPTY OBJ)
       if (profile) {
-        try {
-          const updatedProfile = await Profile.findOneAndUpdate(
-            { user: req.user._id },
-            { $set: newProfile },
-            { new: true }
-          );
+        const updatedProfile = await Profile.findOneAndUpdate(
+          { user: req.user._id },
+          { $set: newProfile },
+          { new: true }
+        );
 
-          res.send(updatedProfile);
-        } catch (err) {
-          res.status(400).send(err);
-        }
+        res.send(updatedProfile);
       } else {
         // Create a profile
-        try {
-          // Check if handle exists
-          const existingProfile = await Profile.findOne({
-            handle: newProfile.handle
-          });
-          if (existingProfile) {
-            errors.handle = 'That handle already exists';
-            return res.status(400).send(errors);
-          }
-
-          const savedProfile = await newProfile.save();
-          res.send(savedProfile);
-        } catch (err) {
-          res.status(400).send(err);
+        // Check if handle exists
+        const existingProfile = await Profile.findOne({
+          handle: newProfile.handle
+        });
+        if (existingProfile) {
+          errors.handle = 'That handle already exists';
+          return res.status(400).send(errors);
         }
+
+        const savedProfile = await newProfile.save();
+        res.send(savedProfile);
       }
     } catch (err) {
       res.status(400).send(err);
@@ -120,58 +112,62 @@ router.post(
 // @route GET api/profile/handle/:handle
 // @desc  Fetch user profile by handle
 // @access  Public
-router.get('/handle/:handle', (req, res) => {
-  const errors = {};
+router.get('/handle/:handle', async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      handle: req.params.handle
+    }).populate('user', ['name', 'avatar']);
+    const errors = {};
 
-  Profile.findOne({ handle: req.params.handle })
-    .populate('user', ['name', 'avatar'])
-    .then(profile => {
-      if (!profile) {
-        errors.profile = 'Profile not found';
-        return res.status(404).send(errors);
-      }
+    if (!profile) {
+      errors.profile = 'Profile not found';
+      return res.status(404).send(errors);
+    }
 
-      res.send(profile);
-    })
-    .catch(err => res.status(400).send(err));
+    res.send(profile);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 // @route GET api/profile/user/:user_id
 // @desc  Fetch user profile by user ID
 // @access  Public
-router.get('/user/:user_id', (req, res) => {
-  const errors = {};
+router.get('/user/:user_id', async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate('user', ['name', 'avatar']);
+    const errors = {};
 
-  Profile.findOne({ user: req.params.user_id })
-    .populate('user', ['name', 'avatar'])
-    .then(profile => {
-      if (!profile) {
-        errors.profile = 'Profile not found';
-        return res.status(404).send(errors);
-      }
+    if (!profile) {
+      errors.profile = 'Profile not found';
+      return res.status(404).send(errors);
+    }
 
-      res.send(profile);
-    })
-    .catch(err => res.status(400).send(err));
+    res.send(profile);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 // @route GET api/profile/all
 // @desc  Fetch all user profiles
 // @access  Public
-router.get('/all', (req, res) => {
-  const errors = {};
+router.get('/all', async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    const errors = {};
 
-  Profile.find({})
-    .populate('user', ['name', 'avatar'])
-    .then(profiles => {
-      if (profiles.length === 0) {
-        errors.profiles = 'No profiles found';
-        return res.status(404).send(errors);
-      }
+    if (profiles.length === 0) {
+      errors.profiles = 'No profiles found';
+      return res.status(404).send(errors);
+    }
 
-      res.send(profiles);
-    })
-    .catch(err => res.status(400).send(err));
+    res.send(profiles);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 // @route POST api/profile/experience
@@ -180,42 +176,30 @@ router.get('/all', (req, res) => {
 router.post(
   '/experience',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    // Validation
-    const { errors, isValid } = validateExperienceInput(req.body);
+  async (req, res) => {
+    try {
+      // Validation
+      const { errors, isValid } = validateExperienceInput(req.body);
 
-    if (!isValid) {
-      return res.status(400).send(errors);
+      if (!isValid) {
+        return res.status(400).send(errors);
+      }
+
+      const profile = await Profile.findOne({ user: req.user._id });
+
+      if (!profile) {
+        errors.profile = 'Profile not found';
+        return res.status(404).send(errors);
+      }
+
+      profile.experience.unshift(req.body);
+
+      const updatedProfile = await profile.save();
+
+      res.send(updatedProfile);
+    } catch (err) {
+      res.status(400).send(err);
     }
-
-    // Get input
-    const newExp = _.pick(req.body, [
-      'title',
-      'company',
-      'location',
-      'from',
-      'to',
-      'current',
-      'description'
-    ]);
-
-    Profile.findOne({ user: req.user._id })
-      .then(profile => {
-        if (!profile) {
-          errors.profile = 'Profile not found';
-          return res.status(404).send(errors);
-        }
-
-        profile.experience.unshift(newExp);
-
-        profile
-          .save()
-          .then(profile => {
-            res.send(profile);
-          })
-          .catch(err => res.status(400).send(err));
-      })
-      .catch(err => res.status(400).send(err));
   }
 );
 
@@ -225,29 +209,28 @@ router.post(
 router.delete(
   '/experience/:exp_id',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user._id })
-      .then(profile => {
-        if (!profile) {
-          errors.profile = 'Profile not found';
-          return res.status(404).send(errors);
-        }
+  async (req, res) => {
+    try {
+      const profile = await Profile.findOne({ user: req.user._id });
 
-        // Delete experiecne by exp_id
-        const removeIndex = _.findIndex(profile.experience, [
-          '_id',
-          ObjectId(req.params.exp_id)
-        ]);
-        profile.experience.splice(removeIndex, 1);
+      if (!profile) {
+        errors.profile = 'Profile not found';
+        return res.status(404).send(errors);
+      }
 
-        profile
-          .save()
-          .then(profile => {
-            res.send(profile);
-          })
-          .catch(err => res.status(400).send(err));
-      })
-      .catch(err => res.status(400).send(err));
+      // Delete experiecne by exp_id
+      const removeIndex = _.findIndex(profile.experience, [
+        '_id',
+        ObjectId(req.params.exp_id)
+      ]);
+      profile.experience.splice(removeIndex, 1);
+
+      const updatedProfile = await profile.save();
+
+      res.send(updatedProfile);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 );
 
@@ -257,42 +240,30 @@ router.delete(
 router.post(
   '/education',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    // Validation
-    const { errors, isValid } = validateEducationInput(req.body);
+  async (req, res) => {
+    try {
+      // Validation
+      const { errors, isValid } = validateEducationInput(req.body);
 
-    if (!isValid) {
-      return res.status(400).send(errors);
+      if (!isValid) {
+        return res.status(400).send(errors);
+      }
+
+      const profile = await Profile.findOne({ user: req.user._id });
+
+      if (!profile) {
+        errors.profile = 'Profile not found';
+        return res.status(404).send(errors);
+      }
+
+      profile.education.unshift(body.req);
+
+      const updatedProfile = await profile.save();
+
+      res.send(updatedProfile);
+    } catch (error) {
+      res.status(400).send(err);
     }
-
-    // Get input
-    const newEdu = _.pick(req.body, [
-      'school',
-      'degree',
-      'fieldofstudy',
-      'from',
-      'to',
-      'current',
-      'description'
-    ]);
-
-    Profile.findOne({ user: req.user._id })
-      .then(profile => {
-        if (!profile) {
-          errors.profile = 'Profile not found';
-          return res.status(404).send(errors);
-        }
-
-        profile.education.unshift(newEdu);
-
-        profile
-          .save()
-          .then(profile => {
-            res.send(profile);
-          })
-          .catch(err => res.status(400).send(err));
-      })
-      .catch(err => res.status(400).send(err));
   }
 );
 
@@ -302,29 +273,28 @@ router.post(
 router.delete(
   '/education/:edu_id',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user._id })
-      .then(profile => {
-        if (!profile) {
-          errors.profile = 'Profile not found';
-          return res.status(404).send(errors);
-        }
+  async (req, res) => {
+    try {
+      const profile = await Profile.findOne({ user: req.user._id });
 
-        // Delete education by edu_id
-        const removeIndex = _.findIndex(profile.education, [
-          '_id',
-          ObjectId(req.params.edu_id)
-        ]);
-        profile.education.splice(removeIndex, 1);
+      if (!profile) {
+        errors.profile = 'Profile not found';
+        return res.status(404).send(errors);
+      }
 
-        profile
-          .save()
-          .then(profile => {
-            res.send(profile);
-          })
-          .catch(err => res.status(400).send(err));
-      })
-      .catch(err => res.status(400).send(err));
+      // Delete education by edu_id
+      const removeIndex = _.findIndex(profile.education, [
+        '_id',
+        ObjectId(req.params.edu_id)
+      ]);
+      profile.education.splice(removeIndex, 1);
+
+      const updatedProfile = await profile.save();
+
+      res.send(updatedProfile);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 );
 
@@ -334,10 +304,15 @@ router.delete(
 router.delete(
   '/',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    Profile.findOneAndRemove({ user: req.user._id }).then(() => {
-      User.findOneAndRemove({ _id: req.user._id }).then(() => res.send());
-    });
+  async (req, res) => {
+    try {
+      await Profile.findOneAndRemove({ user: req.user._id });
+      await User.findOneAndRemove({ _id: req.user._id });
+
+      res.send();
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 );
 

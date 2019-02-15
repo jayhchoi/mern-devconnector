@@ -46,7 +46,15 @@ class Dashboard extends Component {
         return (
           <div>
             <p className="lead text-muted">
-              Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
+              Welcome{' '}
+              <Link
+                to={{
+                  pathname: `/profile/${profile.handle}`,
+                  state: { from: this.props.location }
+                }}
+              >
+                {user.name}
+              </Link>
             </p>
             <ProfileButtons />
             <Experience

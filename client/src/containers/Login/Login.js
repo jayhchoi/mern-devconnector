@@ -20,9 +20,9 @@ class Login extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.props.unsetErrors();
-  }
+  // componentWillUnmount() {
+  //   this.props.unsetErrors();
+  // }
 
   onSubmit = values => {
     this.props.loginUser(values, this.props.history);

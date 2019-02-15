@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import history from '../../utils/history';
+
 const Profile = ({ profile }) => {
+  const { pathname } = history.location;
+
   return (
     <div className="card card-body bg-light mb-3">
       <div className="row">
@@ -15,7 +19,13 @@ const Profile = ({ profile }) => {
             {profile.status} <span>at {profile.company}</span>
           </p>
           <p>{!profile.location ? null : <span>{profile.location}</span>}</p>
-          <Link to={`/profile/${profile.handle}`} className="btn btn-info">
+          <Link
+            to={{
+              pathname: `/profile/${profile.handle}`,
+              state: { from: { pathname } }
+            }}
+            className="btn btn-info"
+          >
             View Profile
           </Link>
         </div>
