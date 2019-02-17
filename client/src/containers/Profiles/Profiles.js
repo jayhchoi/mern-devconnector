@@ -24,9 +24,13 @@ class Profiles extends Component {
       if (_.isEmpty(profiles)) {
         return <p className="lead">There's no profile</p>;
       } else {
-        return profiles.map(profile => (
-          <Profile key={profile._id} profile={profile} />
-        ));
+        return (
+          <div className="row">
+            {profiles.map(profile => (
+              <Profile key={profile._id} profile={profile} />
+            ))}
+          </div>
+        );
       }
     }
   }

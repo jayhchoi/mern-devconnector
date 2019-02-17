@@ -12,7 +12,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
         <div className="container">
-          <span data-toggle="collapse" data-target="#mobile-nav.show">
+          <span data-toggle="collapse" data-target="#mobile-nav.show.in">
             <Link className="navbar-brand" to="/">
               DevConnector
             </Link>
@@ -31,7 +31,7 @@ class Navbar extends Component {
               <li
                 className="nav-item"
                 data-toggle="collapse"
-                data-target="#mobile-nav"
+                data-target="#mobile-nav.in"
               >
                 <Link className="nav-link" to="/profiles">
                   {' '}
@@ -46,7 +46,7 @@ class Navbar extends Component {
                   <li
                     className="nav-item"
                     data-toggle="collapse"
-                    data-target="#mobile-nav"
+                    data-target="#mobile-nav.in"
                   >
                     <Link className="nav-link" to="/feed">
                       Post Feed
@@ -55,7 +55,7 @@ class Navbar extends Component {
                   <li
                     className="nav-item"
                     data-toggle="collapse"
-                    data-target="#mobile-nav"
+                    data-target="#mobile-nav.in"
                   >
                     <Link className="nav-link" to="/dashboard">
                       Dashboard
@@ -64,7 +64,7 @@ class Navbar extends Component {
                   <li
                     className="nav-item"
                     data-toggle="collapse"
-                    data-target="#mobile-nav"
+                    data-target="#mobile-nav.in"
                   >
                     <a
                       href="/"
@@ -87,7 +87,7 @@ class Navbar extends Component {
                   <li
                     className="nav-item"
                     data-toggle="collapse"
-                    data-target="#mobile-nav"
+                    data-target="#mobile-nav.in"
                   >
                     <Link className="nav-link" to="/register">
                       Sign Up
@@ -96,7 +96,7 @@ class Navbar extends Component {
                   <li
                     className="nav-item"
                     data-toggle="collapse"
-                    data-target="#mobile-nav"
+                    data-target="#mobile-nav.in"
                   >
                     <Link className="nav-link" to="/login">
                       Login
