@@ -9,28 +9,28 @@ const Profile = ({ profile }) => {
 
   return (
     <div className="col-md-4 col-sm-6 profile mb-2">
-      <div class="card">
+      <div className="card">
         <img
           src="https://source.unsplash.com/random"
-          class="card-img-top"
+          className="card-img-top"
           alt="..."
         />
         <img
           src={profile.user.avatar}
-          class="rounded-circle round-avatar"
+          className="rounded-circle round-avatar"
           alt="..."
         />
-        <div class="card-body">
-          <h5 class="card-title">{profile.user.name}</h5>
-          <p class="card-text">
+        <div className="card-body">
+          <h5 className="card-title">{profile.user.name}</h5>
+          <p className="card-text">
             {profile.status} <span>at {profile.company}</span> <br />
             {!profile.location ? null : <span>{profile.location}</span>} <br />
-            <hr />
           </p>
+          <hr />
           <h6>Skill Set</h6>
           {profile.skills.slice(0, 4).map((skill, index) => {
             return (
-              <span key={index} class="badge badge-primary text-white mr-1">
+              <span key={index} className="badge badge-primary text-white mr-1">
                 {skill}
               </span>
             );
