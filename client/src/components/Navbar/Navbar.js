@@ -10,11 +10,13 @@ class Navbar extends Component {
     const { isAuthenticated, user } = this.props.auth;
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+      <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
         <div className="container">
-          <Link className="navbar-brand" to="/">
-            DevConnector
-          </Link>
+          <span data-toggle="collapse" data-target="#mobile-nav.show">
+            <Link className="navbar-brand" to="/">
+              DevConnector
+            </Link>
+          </span>
           <button
             className="navbar-toggler"
             type="button"
@@ -26,7 +28,11 @@ class Navbar extends Component {
 
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
+              <li
+                className="nav-item"
+                data-toggle="collapse"
+                data-target="#mobile-nav"
+              >
                 <Link className="nav-link" to="/profiles">
                   {' '}
                   Developers
@@ -37,17 +43,29 @@ class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
               {isAuthenticated ? (
                 <Fragment>
-                  <li className="nav-item">
+                  <li
+                    className="nav-item"
+                    data-toggle="collapse"
+                    data-target="#mobile-nav"
+                  >
                     <Link className="nav-link" to="/feed">
                       Post Feed
                     </Link>
                   </li>
-                  <li className="nav-item">
+                  <li
+                    className="nav-item"
+                    data-toggle="collapse"
+                    data-target="#mobile-nav"
+                  >
                     <Link className="nav-link" to="/dashboard">
                       Dashboard
                     </Link>
                   </li>
-                  <li className="nav-item">
+                  <li
+                    className="nav-item"
+                    data-toggle="collapse"
+                    data-target="#mobile-nav"
+                  >
                     <a
                       href="/"
                       className="nav-link"
@@ -66,12 +84,20 @@ class Navbar extends Component {
                 </Fragment>
               ) : (
                 <Fragment>
-                  <li className="nav-item">
+                  <li
+                    className="nav-item"
+                    data-toggle="collapse"
+                    data-target="#mobile-nav"
+                  >
                     <Link className="nav-link" to="/register">
                       Sign Up
                     </Link>
                   </li>
-                  <li className="nav-item">
+                  <li
+                    className="nav-item"
+                    data-toggle="collapse"
+                    data-target="#mobile-nav"
+                  >
                     <Link className="nav-link" to="/login">
                       Login
                     </Link>

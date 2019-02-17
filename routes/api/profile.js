@@ -256,7 +256,7 @@ router.post(
         return res.status(404).send(errors);
       }
 
-      profile.education.unshift(body.req);
+      profile.education.unshift(req.body);
 
       const updatedProfile = await profile.save();
 
