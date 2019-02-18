@@ -18,7 +18,9 @@ const Experience = ({ experience, onDeleteClick }) => {
         </td>
         <td>
           <button
-            onClick={() => onDeleteClick(exp._id)}
+            onClick={() => {
+              if (window.confirm('Are you sure?')) onDeleteClick(exp._id);
+            }}
             className="btn btn-danger"
           >
             Delete

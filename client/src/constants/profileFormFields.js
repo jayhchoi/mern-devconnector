@@ -50,7 +50,8 @@ export const profileFields = [
     name: 'skills',
     type: 'text',
     component: 'input',
-    placeholder: '*Skills'
+    placeholder: 'e.g. Django,NodeJS,ReactJS,GraphQL',
+    label: '*Skills in comma separated form'
   },
   {
     name: 'githubusername',

@@ -18,7 +18,9 @@ const Education = ({ education, onDeleteClick }) => {
         </td>
         <td>
           <button
-            onClick={() => onDeleteClick(edu._id)}
+            onClick={() => {
+              if (window.confirm('Are you sure?')) onDeleteClick(edu._id);
+            }}
             className="btn btn-danger"
           >
             Delete
